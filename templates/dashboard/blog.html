@@ -1,0 +1,401 @@
+{% extends 'dashboard/base.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<div class="modal fade" id="addblogModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <input type="hidden" name="action" value="create">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Add Blog Post</h5>
+                    <button type="button" class="btn-close"
+                            data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+
+                    <input
+                        type="text"
+                        name="title"
+                        class="form-control mb-3"
+                        placeholder="Blog Post Title"
+                        required>
+
+                    <input
+                        type="text"
+                        name="slug"
+                        class="form-control mb-3"
+                        placeholder="Slug">
+
+                    <input
+                        type="text"
+                        name="category"
+                        class="form-control mb-3"
+                        placeholder="Category">
+
+                    <input
+                        type="text"
+                        name="author"
+                        class="form-control mb-3"
+                        placeholder="Author">
+
+                    <textarea
+                        name="content"
+                        rows="5"
+                        class="form-control mb-3"
+                        placeholder="Blog Content"
+                        required></textarea>
+
+                    <div class="form-check form-switch">
+                        <input class="form-check-input"
+                            type="checkbox"
+                            name="is_published"
+                            >
+
+                        <label class="form-check-label">
+                            Publish Now
+                        </label>
+                    </div>
+
+                    {% if blog_posts.image %}
+                        <img
+                            id="editblog-image"
+                            src=""
+                            width="80"
+                            class="mb-2"
+                            style="display:none;">
+                    {% endif %}
+
+                    <input
+                        type="file"
+                        name="image"
+                        class="form-control mb-3"
+                        placeholder="Image URL">
+
+                    <textarea
+                        name="content"
+                        rows="5"
+                        class="form-control mb-3"
+                        placeholder="Blog Content"
+                        required></textarea>
+
+                    <!-- <input
+                        type="number"
+                        name="order"
+                        value="0"
+                        class="form-control"
+                        placeholder="Display Order"> -->
+
+                </div>
+
+                <div class="modal-footer">
+                    <button
+                        type="button"
+                        class="btn btn-secondary"
+                        data-bs-dismiss="modal">
+                        Cancel
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+                        Save Blog Post
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="deleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form method="POST">
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="delete">
+
+                <input
+                    type="hidden"
+                    id="delete-id"
+                    name="blog_id">
+
+                <div class="modal-body">
+                    Are you sure you want to delete this Blog?
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-danger">
+                        Delete
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="editblogModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <input
+                    type="hidden"
+                    name="action"
+                    value="update">
+
+                <input
+                    type="hidden"
+                    id="edit-id"
+                    name="blog_id">
+
+                <div class="modal-body">
+
+                    <input
+                        id="edit-title"
+                        name="title"
+                        class="form-control mb-3">
+                    <input
+                        id="edit-author"
+                        name="author"
+                        class="form-control mb-3">
+
+                    <input
+                        id="edit-category"
+                        name="category"
+                        class="form-control mb-3">
+
+                    <!-- {% if testimonial.client_image %}
+                        <img src="{{ testimonial.client_image.url }}"
+                            alt=""
+                            width="80"
+                            class="mb-2">
+                    {% endif %}
+                    <img id="current-image-preview"
+                        width="80"
+                        class="mb-2">
+                    
+                    <input
+                        type="file"
+                        name="client_image"
+                        class="form-control">
+                    <input
+                        id="edit-image"
+                        name="client_image"
+                        class="form-control mb-3"> -->
+                    {% if blog_posts.image %}
+                        <img
+                            id="edit-image"
+                            src=""
+                            width="80"
+                            class="mb-2"
+                            style="display:none;">
+                    {% endif %}
+                    <input
+                        type="file"
+                        name="image"
+                        class="form-control mb-3">
+                    <input
+                        id="edit-slug"
+                        name="slug"
+                        class="form-control mb-3">
+
+                    <textarea
+                        id="edit-content"
+                        name="content"
+                        class="form-control"></textarea>
+                    
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                type="checkbox"
+                                name="is_published"
+                                id="edit-is-published"
+                                value="true">
+
+                            <label class="form-check-label" for="edit-is-published">
+                                Published
+                            </label>
+                        </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-primary">
+                        Update
+                    </button>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+    <main class="dashboard-content">
+        <div class="container-fluid px-3 px-lg-4 py-4">
+          <div class="page-heading">
+            <div class="page-heading-copy">
+              <span class="page-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+              <div>
+                <p class="eyebrow mb-1">Blog</p>
+                <h1 class="h3 mb-1">Blog Posts</h1>
+                <p class="text-muted mb-0">Review and manage your blog posts.</p>
+              </div>
+            </div>
+            <div class="heading-actions">
+                <!-- <a class="btn btn-outline-secondary btn-sm" href="tables.html"><i class="bi bi-download" aria-hidden="true"></i> Export</a> -->
+                <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addblogModal"><i class="bi bi-person-plus" aria-hidden="true"></i> Add Blog Post</a>
+            </div>
+          </div>
+
+          <!-- <section class="row g-3 mt-1" aria-label="User summary">
+            <div class="col-12 col-sm-6 col-xl-3">
+              <article class="metric-card metric-primary">
+                <div class="metric-top">
+                  <span class="metric-label">Total Users</span>
+                  <span class="metric-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+                </div>
+                <div class="metric-value">8,742</div>
+                <div class="metric-meta">
+                  <span class="text-success">+5.1%</span>
+                  <span>this month</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+              <article class="metric-card metric-success">
+                <div class="metric-top">
+                  <span class="metric-label">Active</span>
+                  <span class="metric-icon"><i class="bi bi-check2-circle" aria-hidden="true"></i></span>
+                </div>
+                <div class="metric-value">7,980</div>
+                <div class="metric-meta">
+                  <span class="text-success">91%</span>
+                  <span>healthy accounts</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+              <article class="metric-card metric-warning">
+                <div class="metric-top">
+                  <span class="metric-label">Pending</span>
+                  <span class="metric-icon"><i class="bi bi-hourglass-split" aria-hidden="true"></i></span>
+                </div>
+                <div class="metric-value">184</div>
+                <div class="metric-meta">
+                  <span class="text-warning">12</span>
+                  <span>need approval</span>
+                </div>
+              </article>
+            </div>
+
+            <div class="col-12 col-sm-6 col-xl-3">
+              <article class="metric-card metric-danger">
+                <div class="metric-top">
+                  <span class="metric-label">Suspended</span>
+                  <span class="metric-icon"><i class="bi bi-slash-circle" aria-hidden="true"></i></span>
+                </div>
+                <div class="metric-value">38</div>
+                <div class="metric-meta">
+                  <span class="text-danger">4</span>
+                  <span>flagged today</span>
+                </div>
+              </article>
+            </div>
+          </section> -->
+
+          <section class="panel mt-3">
+            <div class="panel-header">
+              <div>
+                <h2 class="h5 mb-1 section-title"><i class="bi bi-table" aria-hidden="true"></i><span>Blog Post List</span></h2>
+                <p class="text-muted mb-0">Search, review, and manage blog posts.</p>
+              </div>
+              <div class="d-flex flex-wrap gap-2">
+                <!-- <input class="form-control form-control-sm table-search" type="search" placeholder="Search users" data-table-search="usersTable" aria-label="Search users"> -->
+                <a class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addblogModal"><i class="bi bi-person-plus" aria-hidden="true"></i> Add Blog Post</a>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-middle mb-0" id="usersTable" data-searchable-table>
+                <thead>
+                    <tr>
+                        <th scope="col">Title</th>
+                        <th scope="col">Image</th>
+                        <th scope="col">author</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">Content</th>
+                        <th scope="col">Slug</th>
+                        <th scope="col" class="text-end">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for blog_posts in blog_posts %}
+                        <tr>
+                            <td>{{ blog_posts.title }}</td>
+                            <td>
+                                {% if blog_posts.image %}
+                                    <img src="{{ blog_posts.image.url }}"
+                                        alt="{{ blog_posts.title }}"
+                                        width="80">
+                                {% endif %}
+                            </td>
+                            <td>{{ blog_posts.author }}</td>
+                            <td>{{ blog_posts.category }}</td>
+                            <td>{{ blog_posts.content|truncatechars:50 }}</td>
+                            <td>{{ blog_posts.slug }}</td>
+                            <td class="text-end">
+                                <a
+                                    class="btn btn-light btn-sm editblog-btn"
+                                    data-id="{{ blog_posts.id }}"
+                                    data-title="{{ blog_posts.title }}"
+                                    data-author="{{ blog_posts.author }}"
+                                    data-category="{{ blog_posts.category }}"
+                                    data-slug="{{ blog_posts.slug }}"
+                                    data-content="{{ blog_posts.content }}"
+                                    data-image="{% if blog_posts.image %}{{ blog_posts.image.url }}{% endif %}"
+                                    data-is_published="{{ blog_posts.is_published }}"
+                                >
+                                    Edit
+                                </a>
+                                <a 
+                                    class="btn btn-danger btn-sm deleteblog-btn" 
+                                    data-id="{{ blog_posts.id }}"
+                                >
+                                    Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            <!-- <div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-3 mt-3">
+              <p class="text-muted small mb-0">Showing 1 to 5 of 124 testimonies</p>
+              <nav aria-label="Users pagination"><ul class="pagination pagination-sm mb-0"><li class="page-item disabled"><a class="page-link" href="#">Previous</a></li><li class="page-item active"><a class="page-link" href="#">1</a></li><li class="page-item"><a class="page-link" href="#">2</a></li><li class="page-item"><a class="page-link" href="#">Next</a></li></ul></nav>
+            </div> -->
+          </section>
+        </div>
+      </main>
+{% endblock %}
