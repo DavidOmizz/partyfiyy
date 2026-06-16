@@ -37,7 +37,8 @@ class Testimonial(models.Model):
     client_name = models.CharField(max_length=200)
     client_title = models.CharField(max_length=200, blank=True)
     client_company = models.CharField(max_length=200, blank=True)
-    client_image = models.ImageField(upload_to='testimonials/', storage=MediaCloudinaryStorage() , blank=True, null=True)
+    # client_image = models.ImageField(upload_to='testimonials/', storage=MediaCloudinaryStorage() , blank=True, null=True)
+    client_image = models.ImageField(upload_to='testimonials/', blank=True, null=True)
     content = models.TextField()
     rating = models.IntegerField(default=5, choices=[(i, str(i)) for i in range(1, 6)])
     order = models.IntegerField(default=0)
@@ -55,7 +56,8 @@ class Testimonial(models.Model):
 
 class Feature(models.Model):
     title = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='features/', storage=MediaCloudinaryStorage() , blank=True, null=True)
+    # image = models.ImageField(upload_to='features/', storage=MediaCloudinaryStorage() , blank=True, null=True)
+    image = models.ImageField(upload_to='features/', blank=True, null=True)
     description = models.TextField()
     order = models.IntegerField(default=0)
     is_active = models.BooleanField(default=True)
@@ -109,28 +111,29 @@ class PrivacyPolicy(models.Model):
         return cls.objects.first()
 
 
-# class BlogCategory(models.Model):
-#     title = models.CharField(max_length=255)
-#     description = models.TextField(max_length=255)
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
+class BlogCategory(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(max_length=255)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
-#     def __str__(self):
-#         return self.title
+    def __str__(self):
+        return self.title
 
 
 class BlogPost(models.Model):
     title = models.CharField(max_length=300, unique=True)
     slug = models.SlugField(max_length=300, unique=True)
     author = models.CharField(max_length=100, default='Partyfiy Team')
-    category = models.CharField(max_length=100, blank=True)
+    # category = models.CharField(max_length=100, blank=True)
     content = models.TextField()
     is_published = models.BooleanField(default=True)
-    image = models.ImageField(upload_to='blog-posts/', storage=MediaCloudinaryStorage() , blank=True, null=True)
+    # image = models.ImageField(upload_to='blog-posts/', storage=MediaCloudinaryStorage() , blank=True, null=True)
+    image = models.ImageField(upload_to='blog/', blank=True, null=True)
     views = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now= True)
-    # category = models.ForeignKey(Category, null=True, blank=True, on_delete=models.CASCADE)
+    category = models.ForeignKey(BlogCategory, null=True, blank=True, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['-created_at']
@@ -148,3 +151,65 @@ class BlogPost(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+
+
+
+class FeaturePricing(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+    
+
+class PricingPlan(models.Model):
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    # billing_period = models.CharField(
+    #     max_length=20,
+    #     choices=[
+    #         ("monthly", "Monthly"),
+    #         ("yearly", "Yearly"),
+    #         ("one-time", "One Time"),
+    #     ],
+    #     default="monthly"
+    # )
+    features = models.ManyToManyField(
+        FeaturePricing,
+        blank=True,
+        related_name="plans"
+    )
+    is_active = models.BooleanField(default=True)
+    # display_order = models.PositiveIntegerField(default=0)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
+
+# class PricingPlan(models.Model):
+#     name = models.CharField(max_length=100)
+#     price = models.DecimalField(max_digits=10,decimal_places=2)
+#     currency = models.CharField(max_length=3,default="USD")
+#     billing_period = models.CharField(max_length=50,default="month")
+#     description = models.TextField(blank=True)
+#     features = models.TextField(help_text="One feature per line")
+#     button_text = models.CharField(max_length=100,default="Get Started")
+#     is_active = models.BooleanField(default=True)
+#     order = models.PositiveIntegerField(default=0)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+
+#     class Meta:
+#         ordering = ["order", "created_at"]
+
+#     def __str__(self):
+#         return self.name

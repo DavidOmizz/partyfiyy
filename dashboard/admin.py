@@ -32,10 +32,29 @@ class PrivacyPolicyAdmin(admin.ModelAdmin):
     list_display = ('title', 'last_updated')
     search_fields = ('title', 'content')
 
+@admin.register(FeaturePricing)
+class FeaturePricingAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
+    search_fields = ('title', 'description')
+
+@admin.register(PricingPlan)
+class PricingPlanAdmin(admin.ModelAdmin):
+    list_display = ('name', 'price', 'is_active')
+    # list_filter = ('is_active')
+    search_fields = ('name', 'description')
+
+
 @admin.register(BlogPost)
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = ('title', 'slug', 'category', 'is_published', 'created_at')
     list_filter = ('is_published', 'category', 'created_at')
     search_fields = ('title', 'content', 'slug')
     prepopulated_fields = {'slug': ('title',)}
+    readonly_fields = ('created_at', 'updated_at')
+
+
+@admin.register(BlogCategory)
+class BlogCategoryAdmin(admin.ModelAdmin):
+    list_display = ('title', 'description', 'created_at')
+    search_fields = ('title', 'description')
     readonly_fields = ('created_at', 'updated_at')

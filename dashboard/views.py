@@ -14,7 +14,17 @@ from django.conf import settings
 # Create your views here.
 @login_required
 def dashboard_view(request):
-    return render(request, 'dashboard/index.html')
+    testmionials_count = Testimonial.objects.count()
+    blog_posts_count = BlogPost.objects.count()
+    features_count = Feature.objects.count()
+    faq_count = FAQ.objects.count()
+    
+    return render(request, 'dashboard/index.html', {
+        'testimonials_count': testmionials_count,
+        'blog_posts_count': blog_posts_count,
+        'features_count': features_count,
+        'faq_count': faq_count
+    })
     # return HttpResponse("Welcome to the Dashboard!")
 
 
@@ -142,12 +152,14 @@ def testimonials_view(request):
 def blog_view(request):
     if request.method == "POST":
         action = request.POST.get("action")
+        category_id = request.POST.get("category")
 
         if action == "create":
             BlogPost.objects.create(
                 title=request.POST.get("title"),
                 slug=request.POST.get("slug"),
-                category=request.POST.get("category"),
+                # category=request.POST.get("category"),
+                category_id=category_id if category_id else None,
                 author=request.POST.get("author"),
                 content=request.POST.get("content"),
                 is_published="is_published" in request.POST,
@@ -162,7 +174,8 @@ def blog_view(request):
             )
             blog_post.title = request.POST.get("title")
             blog_post.slug = request.POST.get("slug")
-            blog_post.category = request.POST.get("category")
+            # blog_post.category = request.POST.get("category")
+            blog_post.category_id = request.POST.get("category") or None
             blog_post.author = request.POST.get("author")
             blog_post.content = request.POST.get("content")
             blog_post.is_published = "is_published" in request.POST
@@ -183,11 +196,12 @@ def blog_view(request):
         return redirect("dashboard:blog")
 
     blog_posts = BlogPost.objects.all()
+    categories = BlogCategory.objects.all()
 
     return render(
         request,
         "dashboard/blog.html",
-        {"blog_posts": blog_posts}
+        {"blog_posts": blog_posts, "categories": categories}
     )
 
 
@@ -315,6 +329,44 @@ def privacy_view(request):
 
 
 @login_required
+def blog_category_view(request):
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "create":
+            BlogCategory.objects.create(
+                title=request.POST.get("title"),
+                description=request.POST.get("description"),
+            )
+
+        elif action == "update":
+            category = get_object_or_404(
+                BlogCategory,
+                id=request.POST.get("blog_category_id")
+            )
+            category.title = request.POST.get("title")
+            category.description = request.POST.get("description")
+            category.save()
+
+        elif action == "delete":
+            category = get_object_or_404(
+                BlogCategory,
+                id=request.POST.get("category_id")
+            )
+            category.delete()
+
+        return redirect("dashboard:blog_category")
+
+    categories = BlogCategory.objects.all()
+
+    return render(
+        request,
+        "dashboard/blog_category.html",
+        {"categories": categories}
+    )
+
+
+@login_required
 def contact_view(request):
     if request.method == "POST":
         ContactMessage.objects.create(
@@ -383,3 +435,106 @@ def contact_view(request):
         return redirect("dashboard:contact")
 
     return render(request, 'dashboard/contact.html')
+
+
+
+
+def featurepricing_view(request):
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "create":
+            FeaturePricing.objects.create(
+                title=request.POST.get("title"),
+                description=request.POST.get("description"),
+                is_active="is_active" in request.POST,
+            )
+
+        elif action == "update":
+            feature = get_object_or_404(
+                FeaturePricing,
+                id=request.POST.get("feature_id")
+            )
+
+            feature.title = request.POST.get("title")
+            feature.description = request.POST.get("description")
+            feature.is_active = "is_active" in request.POST
+            feature.save()
+
+        elif action == "delete":
+            feature = get_object_or_404(
+                FeaturePricing,
+                id=request.POST.get("feature_id")
+            )
+
+            feature.delete()
+
+        return redirect("dashboard:pricing-features")
+
+    features = FeaturePricing.objects.all()
+
+    return render(
+        request,
+        "dashboard/features-pricing.html",
+        {"features": features}
+    )
+
+
+def pricing_view(request):
+    if request.method == "POST":
+        action = request.POST.get("action")
+
+        if action == "create":
+            plan = PricingPlan.objects.create(
+                name=request.POST.get("name"),
+                description=request.POST.get("description"),
+                price=request.POST.get("price"),
+                # billing_period=request.POST.get("billing_period"),
+                # display_order=request.POST.get("display_order") or 0,
+                is_active="is_active" in request.POST,
+            )
+
+            plan.features.set(
+                request.POST.getlist("features")
+            )
+
+        elif action == "update":
+            plan = get_object_or_404(
+                PricingPlan,
+                id=request.POST.get("plan_id")
+            )
+
+            plan.name = request.POST.get("name")
+            plan.description = request.POST.get("description")
+            plan.price = request.POST.get("price")
+            # plan.billing_period = request.POST.get("billing_period")
+            # plan.display_order = request.POST.get("display_order") or 0
+            plan.is_active = "is_active" in request.POST
+
+            plan.save()
+
+            plan.features.set(
+                request.POST.getlist("features")
+            )
+
+        elif action == "delete":
+            plan = get_object_or_404(
+                PricingPlan,
+                id=request.POST.get("plan_id")
+            )
+
+            plan.delete()
+
+        return redirect("dashboard:pricing")
+
+    plans = PricingPlan.objects.prefetch_related("features")
+    features = FeaturePricing.objects.filter(is_active=True)
+
+    return render(
+        request,
+        "dashboard/pricing.html",
+        {
+            "plans": plans,
+            "features": features,
+        }
+    )

@@ -34,11 +34,21 @@
                         class="form-control mb-3"
                         placeholder="Slug">
 
-                    <input
+                    <!-- <input
                         type="text"
                         name="category"
                         class="form-control mb-3"
-                        placeholder="Category">
+                        placeholder="Category"> -->
+
+                    <select name="category" class="form-select mb-3">
+                        <option value="">Select Category</option>
+
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">
+                                {{ category.title }}
+                            </option>
+                        {% endfor %}
+                    </select>
 
                     <input
                         type="text"
@@ -46,12 +56,12 @@
                         class="form-control mb-3"
                         placeholder="Author">
 
-                    <textarea
+                    <!-- <textarea
                         name="content"
                         rows="5"
                         class="form-control mb-3"
                         placeholder="Blog Content"
-                        required></textarea>
+                        required></textarea> -->
 
                     <div class="form-check form-switch">
                         <input class="form-check-input"
@@ -179,10 +189,23 @@
                         name="author"
                         class="form-control mb-3">
 
-                    <input
+                    <!-- <input
                         id="edit-category"
                         name="category"
-                        class="form-control mb-3">
+                        class="form-control mb-3"> -->
+                        <select
+                            id="edit-category"
+                            name="category"
+                            class="form-select mb-3">
+
+                            <option value="">Select Category</option>
+
+                            {% for category in categories %}
+                                <option value="{{ category.id }}">
+                                    {{ category.title }}
+                                </option>
+                            {% endfor %}
+                        </select>
 
                     <!-- {% if testimonial.client_image %}
                         <img src="{{ testimonial.client_image.url }}"
@@ -362,7 +385,13 @@
                                 {% endif %}
                             </td>
                             <td>{{ blog_posts.author }}</td>
-                            <td>{{ blog_posts.category }}</td>
+                            <td>
+                                {% if blog_posts.category %}
+                                    {{ blog_posts.category.title }}
+                                {% else %}
+                                    -
+                                {% endif %}
+                            </td>
                             <td>{{ blog_posts.content|truncatechars:50 }}</td>
                             <td>{{ blog_posts.slug }}</td>
                             <td class="text-end">
@@ -371,7 +400,7 @@
                                     data-id="{{ blog_posts.id }}"
                                     data-title="{{ blog_posts.title }}"
                                     data-author="{{ blog_posts.author }}"
-                                    data-category="{{ blog_posts.category }}"
+                                    data-category="{{ blog_posts.category.id }}"
                                     data-slug="{{ blog_posts.slug }}"
                                     data-content="{{ blog_posts.content }}"
                                     data-image="{% if blog_posts.image %}{{ blog_posts.image.url }}{% endif %}"

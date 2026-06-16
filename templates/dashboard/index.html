@@ -11,20 +11,20 @@
               <div>
                 <p class="eyebrow mb-1">Overview</p>
                 <h1 class="h3 mb-1">Dashboard</h1>
-                <p class="text-muted mb-0">Monitor performance, sales, users, and support from one clean workspace.</p>
+                <p class="text-muted mb-0">Partyfiy</p>
               </div>
             </div>
-            <div class="heading-actions"><button class="btn btn-outline-secondary btn-sm" type="button"><i class="bi bi-download" aria-hidden="true"></i> Export</button><button class="btn btn-primary btn-sm" type="button"><i class="bi bi-file-earmark-plus" aria-hidden="true"></i> Create Report</button></div>
+            <!-- <div class="heading-actions"><button class="btn btn-outline-secondary btn-sm" type="button"><i class="bi bi-download" aria-hidden="true"></i> Export</button><button class="btn btn-primary btn-sm" type="button"><i class="bi bi-file-earmark-plus" aria-hidden="true"></i> Create Report</button></div> -->
           </div>
 
           <section class="row g-3 mt-1" aria-label="Dashboard metrics">
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-primary">
                 <div class="metric-top">
-                  <span class="metric-label">Revenue</span>
+                  <span class="metric-label">Blog Posts</span>
                   <span class="metric-icon"><i class="bi bi-currency-dollar" aria-hidden="true"></i></span>
                 </div>
-                <div class="metric-value">$48,240</div>
+                <div class="metric-value">{{ blog_posts_count }}</div>
                 <div class="metric-meta">
                   <span class="text-success">+12.5%</span>
                   <span>from last month</span>
@@ -35,13 +35,13 @@
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-success">
                 <div class="metric-top">
-                  <span class="metric-label">Orders</span>
+                  <span class="metric-label">Testimonies</span>
                   <span class="metric-icon"><i class="bi bi-bag-check" aria-hidden="true"></i></span>
                 </div>
-                <div class="metric-value">1,284</div>
+                <div class="metric-value">{{ testimonials_count }}</div>
                 <div class="metric-meta">
                   <span class="text-success">+8.2%</span>
-                  <span>new orders</span>
+                  <span>new testimonies</span>
                 </div>
               </article>
             </div>
@@ -49,10 +49,10 @@
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-warning">
                 <div class="metric-top">
-                  <span class="metric-label">Customers</span>
+                  <span class="metric-label">Features</span>
                   <span class="metric-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
                 </div>
-                <div class="metric-value">8,742</div>
+                <div class="metric-value">{{ features_count }}</div>
                 <div class="metric-meta">
                   <span class="text-success">+5.1%</span>
                   <span>active users</span>
@@ -63,10 +63,10 @@
             <div class="col-12 col-sm-6 col-xl-3">
               <article class="metric-card metric-danger">
                 <div class="metric-top">
-                  <span class="metric-label">Tickets</span>
+                  <span class="metric-label">FAQ</span>
                   <span class="metric-icon"><i class="bi bi-life-preserver" aria-hidden="true"></i></span>
                 </div>
-                <div class="metric-value">36</div>
+                <div class="metric-value">{{ faq_count }}</div>
                 <div class="metric-meta">
                   <span class="text-danger">3 urgent</span>
                   <span>need review</span>
@@ -75,7 +75,7 @@
             </div>
           </section>
 
-          <section class="row g-3 mt-1">
+          <!-- <section class="row g-3 mt-1">
             <div class="col-12 col-xl-8">
               <div class="panel">
                 <div class="panel-header">
@@ -113,9 +113,9 @@
                 </div>
               </div>
             </div>
-          </section>
+          </section> -->
 
-          <section class="panel mt-3">
+          <!-- <section class="panel mt-3">
             <div class="panel-header">
               <div>
                 <h2 class="h5 mb-1 section-title"><i class="bi bi-people" aria-hidden="true"></i><span>Recent Users</span></h2>
@@ -210,7 +210,7 @@
                 </tbody>
               </table>
             </div>
-          </section>
+          </section> -->
         </div>
       </main>
 

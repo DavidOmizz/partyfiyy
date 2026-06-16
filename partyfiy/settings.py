@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$co*zdagxb6bbp*l5#@(8^*lobes3+yig!9f2azt62vj+p35tz
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -127,7 +127,8 @@ STATICFILES_DIRS = [
 ]
 
 MEDIA_URL = '/media-partyfiy/'
-MEDIA_ROOT = BASE_DIR / "media-partyfiy"
+# MEDIA_ROOT = BASE_DIR / "media-partyfiy"
+MEDIA_ROOT = BASE_DIR / "media"
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
@@ -136,6 +137,9 @@ LOGIN_URL = "dashboard:login"
 # LOGOUT_REDIRECT_URL = "login"
 
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.ngrok-free.dev",
+]
 
 
 # Cloudinary Configuration

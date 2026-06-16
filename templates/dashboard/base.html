@@ -32,6 +32,10 @@
           <span class="nav-icon"><i class="bi bi-speedometer2" aria-hidden="true"></i></span>
           <span class="nav-text">Dashboard</span>
         </a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'blog_category' %}active{% endif %}" href="{% url 'dashboard:blog_category' %}">
+          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+          <span class="nav-text">Blog Categories</span>
+        </a>
         <a class="nav-link {% if request.resolver_match.url_name == 'blog' %}active{% endif %}" href="{% url 'dashboard:blog' %}">
           <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
           <span class="nav-text">Blog</span>
@@ -48,11 +52,19 @@
           <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
           <span class="nav-text">Faq</span>
         </a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'pricing' %}active{% endif %}" href="{% url 'dashboard:pricing' %}">
+          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+          <span class="nav-text">Pricing</span>
+        </a>
+        <a class="nav-link {% if request.resolver_match.url_name == 'pricing-features' %}active{% endif %}" href="{% url 'dashboard:pricing-features' %}">
+          <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
+          <span class="nav-text">Pricing Features</span>
+        </a>
         <a class="nav-link {% if request.resolver_match.url_name == 'privacy' %}active{% endif %}" href="{% url 'dashboard:privacy' %}">
           <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
           <span class="nav-text">Privacy</span>
         </a>
-        <a class="nav-link" href="users.html">
+        <!-- <a class="nav-link" href="users.html">
           <span class="nav-icon"><i class="bi bi-people" aria-hidden="true"></i></span>
           <span class="nav-text">Users</span>
         </a>
@@ -95,7 +107,7 @@
         <a class="nav-link" href="blank.html">
           <span class="nav-icon"><i class="bi bi-file-earmark" aria-hidden="true"></i></span>
           <span class="nav-text">Blank Page</span>
-        </a>
+        </a> -->
       </nav>
 
       <!-- <div class="sidebar-user">
@@ -270,6 +282,38 @@
         });
     </script>
   <script>
+        document.querySelectorAll(".editblogcategory-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+
+                document.getElementById("edit-id").value =
+                    this.dataset.id;
+
+                document.getElementById("edit-title").value =
+                    this.dataset.title;
+
+                document.getElementById("edit-description").value =
+                    this.dataset.description;
+                                
+
+                new bootstrap.Modal(
+                    document.getElementById("editblogcategoryModal")
+                ).show();
+            });
+        });
+
+        document.querySelectorAll(".deleteblogcategory-btn").forEach(btn => {
+            btn.addEventListener("click", function() {
+
+                document.getElementById("delete-id").value =
+                    this.dataset.id;
+
+                new bootstrap.Modal(
+                    document.getElementById("deleteblogcategoryModal")
+                ).show();
+            });
+        });
+    </script>
+  <script>
         document.querySelectorAll(".editfeature-btn").forEach(btn => {
             btn.addEventListener("click", function() {
 
@@ -400,6 +444,124 @@
             });
         });
     </script>
+
+  <script>
+    document.querySelectorAll(".editfeature-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+
+            document.getElementById("edit-id").value =
+                this.dataset.id;
+
+            document.getElementById("edit-title").value =
+                this.dataset.title;
+
+            document.getElementById("edit-description").value =
+                this.dataset.description;
+
+            document.getElementById("edit-is-active").checked =
+                this.dataset.is_active === "True";
+
+            new bootstrap.Modal(
+                document.getElementById("editfeatureModal")
+            ).show();
+        });
+    });
+
+    document.querySelectorAll(".deletefeature-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+
+            document.getElementById("delete-id").value =
+                this.dataset.id;
+
+            new bootstrap.Modal(
+                document.getElementById("deletefeatureModal")
+            ).show();
+        });
+    });
+    </script>
+
+    <!-- <script>
+      document.querySelectorAll(".editplan-btn").forEach(btn => {
+          btn.addEventListener("click", function () {
+
+              document.getElementById("edit-id").value = this.dataset.id;
+              document.getElementById("edit-name").value = this.dataset.name;
+              document.getElementById("edit-description").value = this.dataset.description;
+              document.getElementById("edit-price").value = this.dataset.price;
+              // document.getElementById("edit-is-active").checked =
+              //     this.dataset.is_active === "True";
+              // ACTIVE TOGGLE
+              document.getElementById("edit-is-active").checked =
+                  this.dataset.is_active === "True" || this.dataset.is_active === "true";
+
+              new bootstrap.Modal(
+                  document.getElementById("editplanModal")
+              ).show();
+          });
+      });
+
+      document.querySelectorAll(".deleteplan-btn").forEach(btn => {
+        btn.addEventListener("click", function() {
+
+            document.getElementById("delete-id").value =
+                this.dataset.id;
+
+            new bootstrap.Modal(
+                document.getElementById("deleteplanModal")
+            ).show();
+        });
+    });
+      </script> -->
+
+
+    <script>
+      document.querySelectorAll(".editplan-btn").forEach(btn => {
+          btn.addEventListener("click", function () {
+
+              document.getElementById("edit-id").value = this.dataset.id;
+              document.getElementById("edit-name").value = this.dataset.name;
+              document.getElementById("edit-description").value = this.dataset.description;
+              document.getElementById("edit-price").value = this.dataset.price;
+
+              // ACTIVE TOGGLE
+              document.getElementById("edit-is-active").checked =
+                  this.dataset.is_active === "True" || this.dataset.is_active === "true";
+
+              // -----------------------------
+              // 🔥 FEATURE SYNC (THIS IS MISSING)
+              // -----------------------------
+
+              // 1. Reset all checkboxes first
+              document.querySelectorAll(".feature-checkbox").forEach(cb => {
+                  cb.checked = false;
+              });
+
+              // 2. Get selected feature IDs
+              const featureIds = (this.dataset.features || "")
+                  .split(",")
+                  .map(id => id.trim())
+                  .filter(id => id);
+
+              // 3. Check matching boxes
+              featureIds.forEach(id => {
+                  const checkbox = document.querySelector(
+                      `.feature-checkbox[value="${id}"]`
+                  );
+
+                  if (checkbox) {
+                      checkbox.checked = true;
+                  }
+              });
+
+              // Show modal
+              new bootstrap.Modal(
+                  document.getElementById("editplanModal")
+              ).show();
+          });
+      });
+    </script>
+
+      
 
     <script>
         const currentYear = new Date().getFullYear();
