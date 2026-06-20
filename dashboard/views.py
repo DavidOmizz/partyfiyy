@@ -85,12 +85,12 @@ def login(request):
 @login_required
 def logout_view(request):
     logout(request)
-    return redirect('login')
+    return redirect('dashboard:login')
 
-@login_required
-def testimonials_view(request):
-    testimonials = Testimonial.objects.all()
-    return render(request, 'dashboard/testimonials.html', {'testimonials': testimonials})
+# @login_required
+# def testimonials_view(request):
+#     testimonials = Testimonial.objects.all()
+#     return render(request, 'dashboard/testimonials.html', {'testimonials': testimonials})
 
 
 

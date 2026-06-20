@@ -171,24 +171,7 @@
 
                     </select>
 
-                    <!-- {% if testimonial.client_image %}
-                        <img src="{{ testimonial.client_image.url }}"
-                            alt=""
-                            width="80"
-                            class="mb-2">
-                    {% endif %}
-                    <img id="current-image-preview"
-                        width="80"
-                        class="mb-2">
                     
-                    <input
-                        type="file"
-                        name="client_image"
-                        class="form-control">
-                    <input
-                        id="edit-image"
-                        name="client_image"
-                        class="form-control mb-3"> -->
                     {% if testimonial.client_image %}
                         <img
                             id="edit-image"
@@ -329,9 +312,13 @@
                         <tr>
                             <td>{{ testimonial.client_name }}</td>
                             <td>
+                                {% if testimonial.client_image %}
                                  <img src="{{ testimonial.client_image.url }}"
                                     alt="{{ testimonial.client_name }}"
                                     width="80">
+                                {% else %}
+                                    <span class="text-muted">No Image</span>
+                                {% endif %}
                             </td>
                             <td>{{ testimonial.client_company }}</td>
                             <td>{{ testimonial.content|truncatechars:50 }}</td>
@@ -344,7 +331,7 @@
                                     data-name="{{ testimonial.client_name }}"
                                     data-title="{{ testimonial.client_title }}"
                                     data-company="{{ testimonial.client_company }}"
-                                    data-image="{{ testimonial.client_image.url }}"
+                                    data-image="{{ testimonial.client_image }}"
                                     data-content="{{ testimonial.content }}"
                                     data-rating="{{ testimonial.rating }}"
                                     data-order="{{ testimonial.order }}"

@@ -61,3 +61,17 @@ class BlogPostSerializer(serializers.ModelSerializer):
         model = BlogPost
         fields = ['id', 'title', 'slug', 'content', 'image',
                   'author', 'category', 'is_published', 'created_at']
+        
+
+class FeaturePricingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = FeaturePricing
+        fields = ["id", "title"]
+
+class PricingPlanSerializer(serializers.ModelSerializer):
+    features = FeaturePricingSerializer(many=True, read_only=True)
+    
+    class Meta:
+        model = PricingPlan
+        fields = ['id', 'name', 'price',
+                  'features', 'description']

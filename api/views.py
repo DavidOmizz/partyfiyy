@@ -38,6 +38,12 @@ class PrivacyPolicyViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = PrivacyPolicySerializer
     ordering = ['created_at']
 
+class PricingPlanViewSet(viewsets.ReadOnlyModelViewSet):
+    """API endpoint for retrieving pricing plans."""
+    queryset = PricingPlan.objects.all()
+    serializer_class = PricingPlanSerializer
+    ordering = ['created_at']
+
 
 class BlogPostViewSet(viewsets.ReadOnlyModelViewSet):
     """API endpoint for retrieving published blog posts."""
@@ -67,8 +73,9 @@ class ContactMessageAPIView(APIView):
                             f"Company: {contact.company_name}\n"
                             f"Phone: {contact.phone}\n\n"
                             f"Message:\n{contact.message}",
-                    from_email=settings.DEFAULT_FROM_EMAIL,
-                    recipient_list=[settings.ADMIN_EMAIL],
+                    from_email="info@partyfiy.com",
+                    recipient_list=["info@partyfiy.com"],
+                    fail_silently=False,
                 )
 
                 # Confirm receipt to user
@@ -78,11 +85,16 @@ class ContactMessageAPIView(APIView):
                             f"Thanks for reaching out. We'll get back to you shortly.\n\n"
                             f"Your message:\n{contact.message}\n\n"
                             f"Best regards,\nPartyfiy Team",
-                    from_email=settings.DEFAULT_FROM_EMAIL,
+                    from_email="info@partyfiy.com",
                     recipient_list=[contact.email],
+                    fail_silently=False,
                 )
             except Exception as e:
-                print(f"Email error: {e}")
+                return Response(
+                        {"error": str(e)},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
+                # print(f"Email error: {e}")
 
             return Response(
                 {"detail": "Your message has been sent successfully!"},

@@ -281,9 +281,13 @@
                         <tr>
                             <td>{{ feature.title }}</td>
                             <td>
-                                 <img src="{{ feature.image.url }}"
-                                    alt="{{ feature.title }}"
-                                    width="80">
+                                {% if feature.image %}
+                                    <img src="{{ feature.image.url }}"
+                                        alt="{{ feature.title }}"
+                                        width="80">
+                                {% else %}
+                                    <span class="text-muted">No Image</span>
+                                {% endif %}
                             </td>
                             <td>{{ feature.description|truncatechars:50 }}</td>
                             <!-- <td><span class="badge text-bg-success">Active</span></td> -->

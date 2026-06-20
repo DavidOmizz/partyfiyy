@@ -19,7 +19,7 @@
   <main class="auth-page">
     <section class="auth-card">
       <a class="auth-brand" href="{% url 'dashboard:dashboard' %}"><span class="brand-icon"><i class="bi bi-grid-1x2-fill" aria-hidden="true"></i></span><span><strong>PartyFiY</strong><small>Sign in to your admin workspace.</small></span></a>
-      <div class="auth-visual"><img src="{% static 'assets/images/png/dasher-ui-bootstrap-5.jpg' %}" alt="adminHMD dashboard interface"></div>
+      <!-- <div class="auth-visual"><img src="{% static 'assets/images/png/dasher-ui-bootstrap-5.jpg' %}" alt="adminHMD dashboard interface"></div> -->
       <form method="POST" class="needs-validation" novalidate>
         {% csrf_token %}
         {% for message in messages %}

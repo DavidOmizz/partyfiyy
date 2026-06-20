@@ -17,6 +17,7 @@ urlpatterns = [
     path('testimonials', views.TestimonialViewSet.as_view({'get': 'list'}), name='testimonials-api'),
     path('contact/', views.ContactMessageAPIView.as_view(), name='api-contact'),
     path('privacy/', views.PrivacyPolicyViewSet.as_view({'get': 'list'}), name='api-privacy'),
+    path('pricing/', views.PricingPlanViewSet.as_view({'get': 'list'}), name='api-pricing'),
     path('blog/', views.BlogPostViewSet.as_view({'get': 'list'}), name='api-blog-list'),
     path('blog/<slug:slug>/', views.BlogPostViewSet.as_view({'get': 'retrieve'}), name='api-blog-detail'),
 ]
