@@ -90,19 +90,6 @@ WSGI_APPLICATION = 'partyfiy.wsgi.application'
 #     }
 # }
 
-
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.mysql",
-#         "NAME": "crested5_partyfiydb_db",
-#         "USER": "crested5_partyfiy_userdb",
-#         "PASSWORD": "ParTyfiY123454321db",
-#         "HOST": "174.138.190.170",
-#         "PORT": "3306",
-#     }
-# }
-
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
@@ -180,17 +167,6 @@ CLOUDINARY_STORAGE = {
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 # print(f"DEFAULT_FILE_STORAGE: {DEFAULT_FILE_STORAGE}")
-
-
-
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'davidomisakin4good@gmail.com'
-# EMAIL_HOST_PASSWORD = 'tlnd ocqm zapy fgmn'  # Use an App Password, not your real password
-# DEFAULT_FROM_EMAIL = 'davidomisakin4good@gmail.com'
-# ADMIN_EMAIL = 'davidomisakin4good@gmail.com'  # Where you want to receive notifications
 
 
 
