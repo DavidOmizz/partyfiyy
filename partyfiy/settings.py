@@ -44,8 +44,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    "cloudinary",
-    "cloudinary_storage",
     'content',
     'dashboard',
     'api',
@@ -169,3 +167,15 @@ EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ADMIN_EMAIL = "info@partyfiy.com"
+
+
+
+# Cloudinary Configuration
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': 'dav6jin5t',
+#     'API_KEY': '643384365164983',
+#     'API_SECRET': 'buhbaCMTdouJRn9x8WRnoG4VZ1M',
+# }
+
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# print(f"DEFAULT_FILE_STORAGE: {DEFAULT_FILE_STORAGE}")
